@@ -14,8 +14,6 @@ http://creativecommons.org/publicdomain/zero/1.0/
 #ifndef _KeccakF1600Interface_h_
 #define _KeccakF1600Interface_h_
 
-#include <inttypes.h>
-
 #define KeccakF_width 1600
 #define KeccakF_laneInBytes 8
 
@@ -45,7 +43,7 @@ void KeccakF1600_StateInitialize(void *state);
   * @pre    0 ≤ @a offset < 8
   * @pre    0 ≤ @a offset + @a length ≤ 8
   */
-void KeccakF1600_StateXORBytesInLane(void *state, uint32_t lanePosition, const uint8_t *data, uint32_t offset, uint32_t length);
+void KeccakF1600_StateXORBytesInLane(void *state, unsigned int lanePosition, const unsigned char *data, unsigned int offset, unsigned int length);
 
 /** Function to XOR data given as bytes into the state.
   * The bits to modify are restricted to start from the bit position 0 and
@@ -56,7 +54,7 @@ void KeccakF1600_StateXORBytesInLane(void *state, uint32_t lanePosition, const u
   *                     divided by 64 bits.
   * @pre    0 ≤ @a laneCount ≤ 25
   */
-void KeccakF1600_StateXORLanes(void *state, const uint8_t *data, uint32_t laneCount);
+void KeccakF1600_StateXORLanes(void *state, const unsigned char *data, unsigned int laneCount);
 
 /** Function to complement the value of a given bit in the state.
   * This function is typically used to XOR the second bit of the multi-rate
@@ -65,7 +63,7 @@ void KeccakF1600_StateXORLanes(void *state, const uint8_t *data, uint32_t laneCo
   * @param  position    The position of the bit to complement.
   * @pre    0 ≤ @a position < 1600
   */
-void KeccakF1600_StateComplementBit(void *state, uint32_t position);
+void KeccakF1600_StateComplementBit(void *state, unsigned int position);
 
 /** Function to apply Keccak-f[1600] on the state.
   * @param  state   Pointer to the state.
@@ -88,7 +86,7 @@ void KeccakF1600_StatePermute(void *state);
   * @pre    0 ≤ @a offset < 8
   * @pre    0 ≤ @a offset + @a length ≤ 8
   */
-void KeccakF1600_StateExtractBytesInLane(const void *state, uint32_t lanePosition, uint8_t *data, uint32_t offset, uint32_t length);
+void KeccakF1600_StateExtractBytesInLane(const void *state, unsigned int lanePosition, unsigned char *data, unsigned int offset, unsigned int length);
 
 /** Function to retrieve data from the state into bytes.
   * The bits to output are restricted to start from the bit position 0 and
@@ -99,7 +97,7 @@ void KeccakF1600_StateExtractBytesInLane(const void *state, uint32_t lanePositio
   *                     divided by 64 bits.
   * @pre    0 ≤ @a laneCount ≤ 25
   */
-void KeccakF1600_StateExtractLanes(const void *state, uint8_t *data, uint32_t laneCount);
+void KeccakF1600_StateExtractLanes(const void *state, unsigned char *data, unsigned int laneCount);
 
 /** Function to sequentially XOR data bytes, apply the Keccak-f[1600]
   * permutation and retrieve data bytes from the state.
@@ -119,6 +117,6 @@ void KeccakF1600_StateExtractLanes(const void *state, uint8_t *data, uint32_t la
   * @pre    0 ≤ @a inLaneCount ≤ 25
   * @pre    0 ≤ @a outLaneCount ≤ 25
   */
-void KeccakF1600_StateXORPermuteExtract(void *state, const uint8_t *inData, uint32_t inLaneCount, uint8_t *outData, uint32_t outLaneCount);
+void KeccakF1600_StateXORPermuteExtract(void *state, const unsigned char *inData, unsigned int inLaneCount, unsigned char *outData, unsigned int outLaneCount);
 
 #endif

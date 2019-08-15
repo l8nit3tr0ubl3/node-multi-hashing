@@ -34,12 +34,11 @@ http://creativecommons.org/publicdomain/zero/1.0/
   * It gathers the state processed by the permutation as well as
   * the rate.
   */
-ALIGN typedef struct Keccak_DuplexInstanceStruct
-{
+ALIGN typedef struct Keccak_DuplexInstanceStruct {
     /** The state processed by the permutation. */
-    ALIGN uint8_t state[KeccakF_width/8];
+    ALIGN unsigned char state[KeccakF_width/8];
     /** The value of the rate in bits.*/
-    uint32_t rate;
+    unsigned int rate;
 } Keccak_DuplexInstance;
 
 /**
@@ -51,7 +50,7 @@ ALIGN typedef struct Keccak_DuplexInstanceStruct
   * @pre    3 ≤ @a rate ≤ 1600, and otherwise the value of the rate is unrestricted.
   * @return Zero if successful, 1 otherwise.
   */
-int Keccak_DuplexInitialize(Keccak_DuplexInstance *duplexInstance, uint32_t rate, uint32_t capacity);
+int Keccak_DuplexInitialize(Keccak_DuplexInstance *duplexInstance, unsigned int rate, unsigned int capacity);
 
 /**
   * Function to make a duplexing call to the duplex object initialized
@@ -85,6 +84,6 @@ int Keccak_DuplexInitialize(Keccak_DuplexInstance *duplexInstance, uint32_t rate
   * @pre    @a ZByteLen ≤ ceil(r/8)
   * @return Zero if successful, 1 otherwise.
   */
-int Keccak_Duplexing(Keccak_DuplexInstance *duplexInstance, const uint8_t *sigmaBegin, uint32_t sigmaBeginByteLen, uint8_t *Z, uint32_t ZByteLen, uint8_t delimitedSigmaEnd);
+int Keccak_Duplexing(Keccak_DuplexInstance *duplexInstance, const unsigned char *sigmaBegin, unsigned int sigmaBeginByteLen, unsigned char *Z, unsigned int ZByteLen, unsigned char delimitedSigmaEnd);
 
 #endif

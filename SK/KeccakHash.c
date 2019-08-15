@@ -18,13 +18,13 @@ http://creativecommons.org/publicdomain/zero/1.0/
 
 /* ---------------------------------------------------------------- */
 
-HashReturn Keccak_HashInitialize(Keccak_HashInstance *instance, uint32_t rate, uint32_t capacity, uint32_t hashbitlen, uint8_t delimitedSuffix)
+HashReturn Keccak_HashInitialize(Keccak_HashInstance *instance, unsigned int rate, unsigned int capacity, unsigned int hashbitlen, unsigned char delimitedSuffix)
 {
     HashReturn result;
 
     if (delimitedSuffix == 0)
         return FAIL;
-    result = static_cast<HashReturn>(Keccak_SpongeInitialize(&instance->sponge, rate, capacity));
+    result = Keccak_SpongeInitialize(&instance->sponge, rate, capacity);
     if (result != SUCCESS)
         return result;
     instance->fixedOutputLength = hashbitlen;
@@ -37,25 +37,22 @@ HashReturn Keccak_HashInitialize(Keccak_HashInstance *instance, uint32_t rate, u
 HashReturn Keccak_HashUpdate(Keccak_HashInstance *instance, const BitSequence *data, DataLength databitlen)
 {
     if ((databitlen % 8) == 0)
-        return static_cast<HashReturn>(Keccak_SpongeAbsorb(&instance->sponge, data, databitlen/8));
+        return Keccak_SpongeAbsorb(&instance->sponge, data, databitlen/8);
     else {
-        HashReturn ret = static_cast<HashReturn>(Keccak_SpongeAbsorb(&instance->sponge, data, databitlen/8));
-        if (ret == SUCCESS)
-        {
+        HashReturn ret = Keccak_SpongeAbsorb(&instance->sponge, data, databitlen/8);
+        if (ret == SUCCESS) {
             // The last partial byte is assumed to be aligned on the least significant bits
-            uint8_t lastByte = data[databitlen/8];
+            unsigned char lastByte = data[databitlen/8];
             // Concatenate the last few bits provided here with those of the suffix
-            uint16_t delimitedLastBytes = (uint16_t)((uint16_t)lastByte | ((uint16_t)instance->delimitedSuffix << (databitlen % 8)));
-            if ((delimitedLastBytes & 0xFF00) == 0x0000)
-            {
-                instance->delimitedSuffix = static_cast<uint8_t>(delimitedLastBytes) & 0xFF;
+            unsigned short delimitedLastBytes = (unsigned short)lastByte | ((unsigned short)instance->delimitedSuffix << (databitlen % 8));
+            if ((delimitedLastBytes & 0xFF00) == 0x0000) {
+                instance->delimitedSuffix = delimitedLastBytes & 0xFF;
             }
-            else
-            {
-                uint8_t oneByte[1];
-                oneByte[0] = static_cast<uint8_t>(delimitedLastBytes) & 0xFF;
-                ret = static_cast<HashReturn>(Keccak_SpongeAbsorb(&instance->sponge, oneByte, 1));
-                instance->delimitedSuffix = static_cast<uint8_t>(delimitedLastBytes >> 8) & 0xFF;
+            else {
+                unsigned char oneByte[1];
+                oneByte[0] = delimitedLastBytes & 0xFF;
+                ret = Keccak_SpongeAbsorb(&instance->sponge, oneByte, 1);
+                instance->delimitedSuffix = (delimitedLastBytes >> 8) & 0xFF;
             }
         }
         return ret;
@@ -66,9 +63,9 @@ HashReturn Keccak_HashUpdate(Keccak_HashInstance *instance, const BitSequence *d
 
 HashReturn Keccak_HashFinal(Keccak_HashInstance *instance, BitSequence *hashval)
 {
-    HashReturn ret = static_cast<HashReturn>(Keccak_SpongeAbsorbLastFewBits(&instance->sponge, instance->delimitedSuffix));
+    HashReturn ret = Keccak_SpongeAbsorbLastFewBits(&instance->sponge, instance->delimitedSuffix);
     if (ret == SUCCESS)
-        return static_cast<HashReturn>(Keccak_SpongeSqueeze(&instance->sponge, hashval, instance->fixedOutputLength/8));
+        return Keccak_SpongeSqueeze(&instance->sponge, hashval, instance->fixedOutputLength/8);
     else
         return ret;
 }
@@ -79,5 +76,5 @@ HashReturn Keccak_HashSqueeze(Keccak_HashInstance *instance, BitSequence *data, 
 {
     if ((databitlen % 8) != 0)
         return FAIL;
-    return static_cast<HashReturn>(Keccak_SpongeSqueeze(&instance->sponge, data, databitlen/8));
+    return Keccak_SpongeSqueeze(&instance->sponge, data, databitlen/8);
 }
