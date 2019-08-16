@@ -1,22 +1,23 @@
 {
     "name": "multi-hashing",
-    "version": "0.0.9",
+    "version": "0.1.0",
     "main": "multihashing",
     "author": {
-        "name": "Matthew Little",
+        "name": "Matthew Little - Original author",
         "email": "zone117x@gmail.com"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/zone117x/node-multi-hashing.git"
+        "url": "https://github.com/l8nit3tr0ubl3/node-multi-hashing.git"
     },
-    "dependencies" : {
-        "bindings" : "*"
+    "dependencies": {
+        "bindings": "*"
     },
     "keywords": [
         "scrypt",
         "scryptjane",
         "script-n",
+        "sk1024",
         "x11",
         "quark",
         "keccak_hash",

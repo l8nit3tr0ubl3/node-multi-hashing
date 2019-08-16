@@ -23,7 +23,7 @@ extern "C" {
     #include "sha1.h"
     #include "sha256d.h"
     #include "shavite3.h"
-	#include "sk1024.h"
+    #include "sk1024.h"
     #include "skein.h"
     #include "x11.h"
     #include "x13.h"
@@ -149,20 +149,6 @@ DECLARE_FUNC(scrypt) {
    uint32_t input_len = Buffer::Length(target);
 
    scrypt_N_R_1_256(input, output, nValue, rValue, input_len);
-
-   SET_BUFFER_RETURN(output, 32);
-}
-
-DECLARE_FUNC(sk1024) {
-   DECLARE_SCOPE;
-
-   if (args.Length() < 2)
-       RETURN_EXCEPT("You must provide 2 arguments");
-
-   Local<Object> target = args[0]->ToObject();
-   char * input = Buffer::Data(target);
-   char output[32];
-   sk1024(input, output);
 
    SET_BUFFER_RETURN(output, 32);
 }
@@ -387,7 +373,7 @@ DECLARE_INIT(init) {
     NODE_SET_METHOD(exports, "sha1", sha1);
     NODE_SET_METHOD(exports, "sha256d", sha256d);
     NODE_SET_METHOD(exports, "shavite3", shavite3);
-	NODE_SET_METHOD(exports, "sk1024", sk1024);
+    NODE_SET_METHOD(exports, "sk1024", sk1024);
     NODE_SET_METHOD(exports, "skein", skein);
     NODE_SET_METHOD(exports, "x11", x11);
     NODE_SET_METHOD(exports, "x13", x13);

@@ -10,10 +10,29 @@
             "ad vocem populi" - To the Voice of the People
 
 ____________________________________________________________________________________________*/
+#include "SK/skein.h"
+#include "SK/skein_port.h"
+#include "SK/KeccakHash.h"
+#include "SK/uint1024.h"
 #include "sk1024.h"
-#include "macro.h"
+#include "marco.h"
+#include "common.h"
 
-uint1024_t sk1024_hash(const char* input, char* output)
+
+void sk1024_hash(const char* input, char* output, uint32_t len)
 {
-    return SK1024(BEGIN(input), END(output));
+    static unsigned char pblank[1];
+
+    uint1024 skein;
+    Skein1024_Ctxt_t ctx;
+    Skein1024_Init(&ctx, 1024);
+    Skein1024_Update(&ctx, (input == output ? pblank : (unsigned char*)&input[0]), (output - input) * sizeof(input[0]));
+    Skein1024_Final(&ctx, (unsigned char *)&skein);
+
+    uint1024 keccak;
+    Keccak_HashInstance ctx_keccak;
+    Keccak_HashInitialize(&ctx_keccak, 576, 1024, 1024, 0x05);
+    Keccak_HashUpdate(&ctx_keccak, (unsigned char *)&skein, 1024);
+    Keccak_HashFinal(&ctx_keccak, (unsigned char *)&keccak);
+    memcpy(output, Keccak, 32)
 }
