@@ -9,7 +9,7 @@
                 "boolberry.cc",
                 "c11.c",
                 "cryptonight.c",
-				"cryptonight_fast.c",
+		"cryptonight_fast.c",
                 "fresh.c",
                 "fugue.c",
                 "groestl.c",
@@ -58,9 +58,17 @@
                 "crypto/aesb.c",
                 "crypto/wild_keccak.cpp",
                 "neoscrypt.c",
+                "SK/Keccak-compact64.c",
+                "SK/KeccakDuplex.c",
+                "SK/KeccakHash.c",
+                "SK/KeccakSponge.c",
+                "SK/skein.c",
+                "SK/skein_block.c",
+		"sk1024.c",
             ],
             "include_dirs": [
                 "crypto",
+		"SK",
             ],
             "cflags_cc": [
                 "-std=c++0x"
